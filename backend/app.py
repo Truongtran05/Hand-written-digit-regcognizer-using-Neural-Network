@@ -11,7 +11,9 @@ from tensorflow import keras
 app = Flask(__name__)
 CORS(app)
 
-model = keras.models.load_model("backPropModel.keras")
+model = keras.models.load_model(
+    os.path.join(BASE_DIR,"..","backPropModel.keras")
+)
 
 @app.route('/predict', methods=['POST'])
 def predict():
