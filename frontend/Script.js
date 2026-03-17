@@ -34,7 +34,7 @@ function clearCanvas() {
 async function predict() {
     const imageData = canvas.toDataURL('image/png');
 
-    const res = await fetch('http://localhost:5000/predict', {
+    const res = await fetch('/predict', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: imageData })
