@@ -5,12 +5,15 @@ import numpy as np
 import base64, io
 import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 from tensorflow import keras
 
 app = Flask(__name__)
 CORS(app)
 
-model = keras.models.load_model('backPropModel.keras')
+model = keras.models.load_model(
+    os.path.join(BASE_DIR, "backPropModel.keras")
+)
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -74,5 +77,6 @@ def predict():
         'mnist_image': preview_data_url
     })
 
-if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+if __name__ == "__main__":
+    port = int(os.environ.get("PORT", 5000))
+    app.run(host="0.0.0.0", port=port)
