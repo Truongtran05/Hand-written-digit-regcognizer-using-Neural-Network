@@ -1,4 +1,4 @@
-from flask import Flask, request, jsonify
+from flask import Flask, request, jsonify, send_from_directory
 from flask_cors import CORS
 from PIL import Image
 import numpy as np
@@ -6,14 +6,28 @@ import base64, io
 import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+FRONTEND_DIR = os.path.join(os.path.dirname(BASE_DIR), "frontend")
 from tensorflow import keras
 
-app = Flask(__name__)
+app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="")
 CORS(app)
 
 model = keras.models.load_model(
     os.path.join(BASE_DIR,"backPropModel.keras")
 )
+
+
+@app.route('/', methods=['GET'])
+def index():
+    return send_from_directory(FRONTEND_DIR, 'index.html')
+
+
+@app.route('/<path:path>', methods=['GET'])
+def frontend_files(path):
+    file_path = os.path.join(FRONTEND_DIR, path)
+    if os.path.isfile(file_path):
+        return send_from_directory(FRONTEND_DIR, path)
+    return send_from_directory(FRONTEND_DIR, 'index.html')
 
 @app.route('/predict', methods=['POST'])
 def predict():
