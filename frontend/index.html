@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Digit Recognizer</title>
+  <link rel="stylesheet" href="SyleSheet.css">
+</head>
+<body>
+  <h1 class="title_card">Hand-written Digits Recognizer</h1>
+  <p class="instruction">Write a number from 0-9 below:</p>
+
+  <canvas id="canvas" width="280" height="280"
+    style="border:2px solid black; cursor:crosshair; background:black">
+  </canvas>
+  <br>
+  <button class="btn" onclick="predict()">Recognize</button>
+  <button class="btn" onclick="clearCanvas()">Clear</button>
+
+  <p id="result">You wrote: —</p>
+  <script src="Script.js"></script>
+</body>
+</html>
