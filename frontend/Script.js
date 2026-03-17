@@ -2,6 +2,7 @@ const canvas = document.getElementById('canvas');
 const ctx = canvas.getContext('2d');
 const mnistPreview = document.getElementById('mnistPreview');
 let drawing = false;
+const API_BASE_URL = 'https://hand-written-digit-regcognizer-using.onrender.com';
 
 function resetBlackBackground() {
     ctx.fillStyle = 'black';
@@ -34,7 +35,7 @@ function clearCanvas() {
 async function predict() {
     const imageData = canvas.toDataURL('image/png');
 
-    const res = await fetch('/predict', {
+    const res = await fetch(`${API_BASE_URL}/predict`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ image: imageData })
