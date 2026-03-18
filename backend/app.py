@@ -1,16 +1,19 @@
-from flask import Flask, request, jsonify, send_from_directory
+from flask import Flask, request, jsonify
 from flask_cors import CORS
 from PIL import Image
 import numpy as np
 import base64, io
 import os
 os.environ['TF_ENABLE_ONEDNN_OPTS'] = '0'
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-FRONTEND_DIR = os.path.join(os.path.dirname(BASE_DIR), "frontend")
 from tensorflow import keras
 
-app = Flask(__name__, static_folder=FRONTEND_DIR, static_url_path="")
-CORS(app)
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+
+app = Flask(__name__)
+CORS(
+    app,
+    resources={r"/predict": {"origins": "*"}}
+)
 
 model = keras.models.load_model(
     os.path.join(BASE_DIR,"backPropModel.keras")
@@ -19,15 +22,7 @@ model = keras.models.load_model(
 
 @app.route('/', methods=['GET'])
 def index():
-    return send_from_directory(FRONTEND_DIR, 'index.html')
-
-
-@app.route('/<path:path>', methods=['GET'])
-def frontend_files(path):
-    file_path = os.path.join(FRONTEND_DIR, path)
-    if os.path.isfile(file_path):
-        return send_from_directory(FRONTEND_DIR, path)
-    return send_from_directory(FRONTEND_DIR, 'index.html')
+    return jsonify({'message': 'Digit recognizer backend is running', 'status': 'ok'})
 
 @app.route('/predict', methods=['POST'])
 def predict():
@@ -62,13 +57,6 @@ def predict():
     x_offset = 4
     y_offset = 4 
     centered_image_array[x_offset:x_offset+20, y_offset:y_offset+20] = img_center_array
-
-    #Display input image for debug
-    # centered_image = Image.fromarray(centered_image_array)
-    # plt.figure(figsize=(10,3)) 
-    # plt.imshow(centered_image,cmap='gray')
-    # plt.title(f"Input from client")
-    # plt.show()
 
     # Build a displayable 28x28 image preview of the exact model input.
     preview_array = centered_image_array.astype(np.uint8)
