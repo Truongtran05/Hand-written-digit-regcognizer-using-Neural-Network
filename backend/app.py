@@ -18,6 +18,7 @@ CORS(
 model = None
 
 def get_model():
+    global model
     if(model == None):
         model = keras.models.load_model(
             os.path.join(BASE_DIR,"backPropModel.keras")
