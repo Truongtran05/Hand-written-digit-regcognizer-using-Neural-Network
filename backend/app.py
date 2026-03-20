@@ -15,9 +15,14 @@ CORS(
     resources={r"/predict": {"origins": "*"}}
 )
 
-model = keras.models.load_model(
-    os.path.join(BASE_DIR,"backPropModel.keras")
-)
+model = None
+
+def get_model():
+    if(model == None):
+        model = keras.models.load_model(
+            os.path.join(BASE_DIR,"backPropModel.keras")
+        )
+    return model
 
 
 @app.route('/', methods=['GET'])
@@ -68,7 +73,7 @@ def predict():
 
     #Reshape and normalize model input 
     centered_image_array = centered_image_array.reshape(1,784)/255.0 
-    prediction = model.predict(centered_image_array, verbose=0)
+    prediction = get_model().predict(centered_image_array, verbose=0)
     probs = keras.activations.softmax(prediction).numpy()
     digit = int(np.argmax(probs))
     confidence = float(np.max(probs)) * 100
