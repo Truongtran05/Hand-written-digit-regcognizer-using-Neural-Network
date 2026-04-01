@@ -108,6 +108,31 @@ body {
 	box-shadow: 0 10px 28px rgba(3, 11, 18, 0.34);
 }
 
+.footer {
+	margin-top: auto;
+	padding: 0.7rem 1rem;
+	border-radius: 12px;
+	border: 1px solid rgba(141, 201, 238, 0.28);
+	background: rgba(10, 28, 40, 0.68);
+	color: var(--text-soft);
+	font-size: 0.92rem;
+	text-align: center;
+	backdrop-filter: blur(6px);
+	box-shadow: 0 10px 24px rgba(2, 10, 17, 0.3);
+}
+
+.footer a {
+	color: #ffd1a8;
+	font-weight: 700;
+	text-decoration: none;
+	transition: color 160ms ease, text-shadow 160ms ease;
+}
+
+.footer a:hover {
+	color: #ffe0c4;
+	text-shadow: 0 0 10px rgba(255, 159, 95, 0.45);
+}
+
 #mnistPreview {
 	margin-top: 0.35rem;
 	border-radius: 12px;
